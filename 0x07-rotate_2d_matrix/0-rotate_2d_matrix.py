@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """Rotates a 2D matrix"""
 
+
 def rotate_2d_matrix(matrix):
     """
        Rotates 2D matrix 90 degrees clockwise
@@ -8,22 +9,20 @@ def rotate_2d_matrix(matrix):
        args:
           matrix
     """
-    n = len(matrix)
-    for layer in range(n // 2):
-        first = layer
-        last = n - 1 - layer
-        for i in range(first, last):
-            offset = i - first
-            top = matrix[first][i]
+    left, right = 0, len(matrix) - 1
 
-            # left -> top
-            matrix[first][i] = matrix[last - offset][first]
-
-            # bottom -> left
-            matrix[last - offset][first] = matrix[last][last - offset]
-
-            # right -> bottom
-            matrix[last][last - offset] = matrix[i][last]
-
-            # top -> right
-            matrix[i][last] = top
+    while left < right:
+        for i in range(right - left):
+            top, bottom = left, right
+            # save topleft  value
+            topLeft = matrix[top][left + i]
+            # move bottom left to top left
+            matrix[top][left + i] = matrix[bottom - i][left]
+            # move bottom right to bottom left
+            matrix[bottom - i][left] = matrix[bottom][right - i]
+            # move top right to bottom right
+            matrix[bottom][right - i] = matrix[top + i][right]
+            # move top left to top right
+            matrix[top + i][right] = topLeft
+        right -= 1
+        left += 1
